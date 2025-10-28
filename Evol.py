@@ -8,14 +8,14 @@ import random
 from random import randint
 
 # Configuration initiale du fichier Excel
-file_path = r"C:\PRIVE\programmation\Evol\graphique.xlsx"
+file_path = r"D:\PRIVE\programmation\EVOL\graphique.xlsx"
 wb = openpyxl.load_workbook(file_path)
 feuille = wb["Sheet1"]
 
 """----------------------------------------------------paramètres----------------------------------------------------------------""" 
 #TAILLE ET DIMENSIONS
-fenetre_X = 1500     #largeur de la fenêtre (900)
-fenetre_Y = 800     #hauteur de la fenêtre (780)
+fenetre_X = 1550     #largeur de la fenêtre (900)   1550,800 pour le plein écran
+fenetre_Y = 880     #hauteur de la fenêtre (780)
 bordure_X = 1300     #largeur de la bordure (800)
 bordure_Y = 800     #hauteur de la bordure (700)
 objets_petits = True  #taille des objets (divisé par 2 si True)
@@ -30,7 +30,7 @@ rareté_des_mutations = 5        # une chance sur le nombre de muter les caract�
 rareté_des_mutations_type = 20  # une chance sur le nombre de changer de type
 
 #PREDATEURS
-nb_predateurs = 5               #nombre de prédateurs au départ
+nb_predateurs = 10               #nombre de prédateurs au départ
 ressources_predateurs = 6000     #ressources de base des prédateurs
 delai_attaque_predateurs = 20    #délai entre deux attaques des prédateurs
 delai_predateurs = 50            #délai entre deux apparitions de prédateurs
@@ -40,7 +40,7 @@ portee_predateurs = 100          #portée de base des prédateurs
 vitesse_predateurs = 2           #vitesse de base des prédateurs
 
 #PIONS
-nb_pions = 60                    #nombre de pions au départ
+nb_pions = 100                    #nombre de pions au départ
 vitesse_pions = 1                #vitesse de base des pions
 portee_pions = 80                #portée de base des pions
 ressources_pions = 6000          #ressources de base (6000 est pas mal)
@@ -49,12 +49,12 @@ fuite = True                     #fuit-il les prédateurs ? (si True les deux ty
 fuite_bob = True                 #les pions verts fuient-ils les prédateurs ?
 fuite_bod = True                 #les pions oranges fuient-ils les prédateurs ?
 pions_apparaissent = 0           #pions qui apparaissent "magiquement" (1/...) (0 = Aucun)
-ressources_replication = "50%"   #nombre de ressources nécessaires pour se repliquer, format : "20%" ou "20" pour la valeur brute
-delai_pions = 200                #délai entre deux apparitions de pions
+ressources_replication = "70%"   #nombre de ressources nécessaires pour se repliquer, format : "20%" ou "20" pour la valeur brute
+delai_pions = 1000                #délai entre deux apparitions de pions
 
 #AVANTAGES pions
 vitesse_orange = 0               #bonus de vitesse des pions oranges (en %)
-vitesse_vert = 2                 #bonus de vitesse des pions verts (en %)
+vitesse_vert = 50                 #bonus de vitesse des pions verts (en %)
 ressources_vert = 0              #bonus de ressources des pions verts
 ressources_orange = 400            #bonus de ressources des pions oranges
 portee_vert = 20                  #bonus de portée des pions verts
@@ -161,11 +161,11 @@ class pion :
         if nom == None:
             nom = "Bob" if randint(0,1) == 1 else "Bod"
         if (nom == "Bod"):                     #choix entre 2 pions
-            self.image = pygame.image.load(r"C:\PRIVE\programmation\Evol\Bod.png")#.convert()    #C:\PRIVE\programmation\Evol\
+            self.image = pygame.image.load(r"D:\PRIVE\programmation\EVOL\Bod.png")#.convert()    #C:\PRIVE\programmation\Evol\
             self.image = pygame.transform.scale(self.image,(int(self.image.get_width()/int(taille_objets*2)), int(self.image.get_height()/int(taille_objets*2))))     #réduction de taille
             self.nom = "Bod"                #orange  
         else:
-            self.image = pygame.image.load(r"C:\PRIVE\programmation\Evol\Bob.png")#.convert()     #C:\PRIVE\programmation\Evol\
+            self.image = pygame.image.load(r"D:\PRIVE\programmation\EVOL\Bob.png")#.convert()     #C:\PRIVE\programmation\Evol\
             self.image = pygame.transform.scale(self.image,(int(self.image.get_width()/int(taille_objets*2)), int(self.image.get_height()/int(taille_objets*2))))
             self.nom = "Bob"                #vert
 
@@ -200,6 +200,7 @@ class pion :
             self.portee += portee_orange
             self.vitesse += vitesse_orange/100 * self.vitesse
             self.ressource += ressources_orange
+
         pion.R_proche = [0,100000000]                       #ressource la plus proche et distance
         self.recherche_nourriture = False
         self.fuite = False
@@ -264,7 +265,7 @@ class pion :
 
 class predateur :
     def __init__ (self,x,y):
-        self.image = pygame.image.load(r"C:\PRIVE\programmation\Evol\predateur.png")#.convert()    #C:\PRIVE\programmation\Evol\
+        self.image = pygame.image.load(r"D:\PRIVE\programmation\EVOL\predateur.png")#.convert()    #C:\PRIVE\programmation\Evol\
         self.image = pygame.transform.scale(self.image,(int(self.image.get_width()/int(taille_objets*4)), int(self.image.get_height()/int(taille_objets*4))))
 
         self.rect = self.image.get_rect()       #propriétés du pion
@@ -364,16 +365,16 @@ class text :
 class decor :
     def __init__ (self,x,y,type):
         if type == "maison":
-            self.image = pygame.image.load(r"C:\PRIVE\programmation\Evol\decor.png")#.convert()          #image    #C:\PRIVE\programmation\Evol\
+            self.image = pygame.image.load(r"D:\PRIVE\programmation\EVOL\decor.png")#.convert()          #image    #C:\PRIVE\programmation\Evol\
             self.image = pygame.transform.scale(self.image,(int(self.image.get_width()/int(taille_objets*2)), int(self.image.get_height()/int(taille_objets*2))))     #réduite par 2
             self.type = "maison"
         elif type == "ressource":
-            self.image = pygame.image.load(r"C:\PRIVE\programmation\Evol\Ressource.png")#.convert()          #image    #C:\PRIVE\programmation\Evol\
+            self.image = pygame.image.load(r"D:\PRIVE\programmation\EVOL\Ressource.png")#.convert()          #image    #C:\PRIVE\programmation\Evol\
             self.image = pygame.transform.scale(self.image,(int(self.image.get_width()/int(taille_objets*2)), int(self.image.get_height()/int(taille_objets*2))))
             self.type = "ressource"
             self.disponibilite = disponibilite_ressources
         elif type == "potions":
-            self.image = pygame.image.load(r"C:\PRIVE\programmation\Evol\potion.png")#.convert()          #image    #C:\PRIVE\programmation\Evol\
+            self.image = pygame.image.load(r"D:\PRIVE\programmation\EVOL\potion.png")#.convert()          #image    #C:\PRIVE\programmation\Evol\
             self.image = pygame.transform.scale(self.image,(int(self.image.get_width()/int(taille_objets*2)), int(self.image.get_height()/int(taille_objets*2))))
             self.type = "potions"
         else:
@@ -431,9 +432,9 @@ class Game:
     def lancer_simulation(self):
         self.ajouter_text("Jeu de Paul",100,100,"Blue")
         self.ajouter_dessin(borderup[0],borderup[1],borderdown[0]-borderup[0],Épaisseur,(200,69,230))           #apparition des bordures
-        self.ajouter_dessin(borderup[0],borderup[1],Épaisseur,borderdown[1]-borderup[1],(200,69,230))
-        self.ajouter_dessin(borderdown[0],borderup[1],Épaisseur,Épaisseur+borderdown[1]-borderup[1],(200,69,230))
-        self.ajouter_dessin(borderup[0],borderdown[1],borderdown[0]-borderup[0],Épaisseur,(200,69,230))
+        self.ajouter_dessin(borderup[0],borderup[1],Épaisseur,borderdown[1],(200,69,230))
+        self.ajouter_dessin(borderdown[0],borderup[1],Épaisseur,Épaisseur+borderdown[1],(200,69,230))  #Ici on rajoute une épaissaur car sinon on a pas le coin en bas à droite, qui n'est couvert par rien
+        self.ajouter_dessin(borderup[0],borderdown[1],borderdown[0],Épaisseur,(200,69,230))
         self.lancé = True
         for i in range (nb_pions):
             if randint(0,100) < proportion_orange:
@@ -498,12 +499,13 @@ class Game:
                 if pion.nom == "Bod":
                     self.list_pion.remove(pion)
         
-        if touche[pygame.K_p]:              #controle utilisateur
+        if touche[pygame.K_y]:              #controle utilisateur
             pass
-
+               
     def update(self):
         self.tpsGame += 1           # temps général
         for pion in self.list_pion[:]:
+
         # Vérification de la mort des pions
             if pion.ressource < 0:  # mort du pion
                 self.list_pion.remove(pion)
@@ -551,23 +553,32 @@ class Game:
                             pion.ressource -= pion.ressource/20
                             predateur.delai_attaque = 1
                             predateur.Goto(randint(borderup[0],borderdown[0]), randint(borderup[1],borderdown[1]))
+
         #collisions de pions avec les autres pions
-            #for autre_pion in self.list_pion[:]:    
+            #for autre_pion in self.list_pion[:]:
         #colisions de pion avec les bordures
             if pion.rect.x < borderup[0]:
                 pion.rect.x = borderup[0]+3
+                pion.pos_x = float(pion.rect.x)
+                pion.centre_x = pion.rect.x + pion.image.get_width()/2
                 pion.target_x = borderup[0]+3
                 pion.target_y = pion.rect.y
             if (pion.rect.x+int(pion.image.get_width())) > borderdown[0]:
                 pion.rect.x = borderdown[0]- int(pion.image.get_width())-3
+                pion.pos_x = float(pion.rect.x)
+                pion.centre_x = pion.rect.x + pion.image.get_width()/2
                 pion.target_x = borderdown[0] - int(pion.image.get_width())-3
                 pion.target_y = pion.rect.y
             if pion.rect.y < borderup[1]:
                 pion.rect.y = borderup[1]+3
+                pion.pos_y = float(pion.rect.y)
+                pion.centre_y = pion.rect.y + pion.image.get_height()/2
                 pion.target_y = borderup[1]+3
                 pion.target_x = pion.rect.x
             if pion.rect.y+int(pion.image.get_height()) > borderdown[1]:
                 pion.rect.y = borderdown[1]-int(pion.image.get_height())-3
+                pion.pos_y = float(pion.rect.y)
+                pion.centre_y = pion.rect.y + pion.image.get_height()/2
                 pion.target_y = borderdown[1]-int(pion.image.get_height())-3
                 pion.target_x = pion.rect.x
 
@@ -795,7 +806,15 @@ class Game:
                                 if mutations_de_type and randint(1,rareté_des_mutations_type) == 1:           #mutation une fois sur la rareté définie
                                     type = "Bob"
 
-                            # Appeler une seule fois `ajouter_pion` avec les nouvelles coordonnées
+                            if pion.rect.x + dx > borderdown[0]:
+                                dx = borderdown[0] - pion.rect.x
+                            if pion.rect.x + dx < borderup[0]:
+                                dx = borderup[0] - pion.rect.x
+                            if pion.rect.y + dy > borderdown[1]:
+                                dy = borderdown[1] - pion.rect.y
+                            if pion.rect.y + dy < borderup[1]:
+                                dy = borderup[1] - pion.rect.y
+                            
                             nouveau_pion = self.ajouter_pion(pion.rect.x + dx, pion.rect.y + dy,type)
 
                             nouveau_pion.ressource_base = pion.ressource_base    #ressources de base
@@ -900,6 +919,15 @@ class Game:
                             type = "Bod"
                             if mutations_de_type and randint(1,rareté_des_mutations_type) == 1:           #mutation de type selon la rareté définie
                                 type = "Bob"
+
+                        if pion.rect.x + dx > borderdown[0]:
+                            dx = borderdown[0] - pion.rect.x
+                        if pion.rect.x + dx < borderup[0]:
+                            dx = borderup[0] - pion.rect.x
+                        if pion.rect.y + dy > borderdown[1]:
+                            dy = borderdown[1] - pion.rect.y
+                        if pion.rect.y + dy < borderup[1]:
+                            dy = borderup[1] - pion.rect.y
 
                         nouveau_pion = self.ajouter_pion(pion.rect.x + dx, pion.rect.y + dy,type)
 
@@ -1116,18 +1144,26 @@ class Game:
         #collisions bordures
             if predateur.rect.x < borderup[0]:
                 predateur.rect.x = borderup[0]+3
+                predateur.pos_x = float(predateur.rect.x)
+                predateur.centre_x = predateur.rect.x + predateur.image.get_width()/2
                 predateur.target_x = borderup[0]+3
                 predateur.target_y = predateur.rect.y
             if (predateur.rect.x+int(predateur.image.get_width())) > borderdown[0]:
                 predateur.rect.x = borderdown[0]- int(predateur.image.get_width())-3
+                predateur.pos_x = float(predateur.rect.x)
+                predateur.centre_x = predateur.rect.x + predateur.image.get_width()/2
                 predateur.target_x = borderdown[0] - int(predateur.image.get_width())-3
                 predateur.target_y = predateur.rect.y
             if predateur.rect.y < borderup[1]:
                 predateur.rect.y = borderup[1]+3
+                predateur.pos_y = float(predateur.rect.y)
+                predateur.centre_y = predateur.rect.y + predateur.image.get_height()/2
                 predateur.target_y = borderup[1]+3
                 predateur.target_x = predateur.rect.x
             if predateur.rect.y+int(predateur.image.get_height()) > borderdown[1]:
                 predateur.rect.y = borderdown[1]-int(predateur.image.get_height())-3
+                predateur.pos_y = float(predateur.rect.y)
+                predateur.centre_y = predateur.rect.y + predateur.image.get_height()/2
                 predateur.target_y = borderdown[1]-int(predateur.image.get_height())-3
                 predateur.target_x = predateur.rect.x
         #apparition prédateurs
@@ -1190,3 +1226,7 @@ game = Game(screen)
 game.run()
 pygame.quit()
 wb.save(file_path)
+
+
+
+#bordures pas vraiment respectées ?
