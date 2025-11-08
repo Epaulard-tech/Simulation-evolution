@@ -1226,7 +1226,3 @@ game = Game(screen)
 game.run()
 pygame.quit()
 wb.save(file_path)
-
-
-
-#bordures pas vraiment respectées ?
